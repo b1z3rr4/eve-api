@@ -18,7 +18,7 @@ class EventController {
      */
     public authenticate(req: Request, res: Response): void {
         const apiKey = req.headers['x-api-key'];
-        if (apiKey === 'SUA_API_KEY') {
+        if (apiKey === process.env.AUTH_TOKEN) {
             const token = generateToken();
             res.json({ token });
         } else {

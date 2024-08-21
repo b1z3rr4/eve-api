@@ -7,7 +7,7 @@ servers:
   - url: http://localhost:3000
     description: Servidor local
 paths:
-  /authenticate:
+  /api/auth:
     post:
       summary: Autentica um usuário e retorna um token
       parameters:
@@ -28,7 +28,7 @@ paths:
                     type: string
         '401':
           description: Chave de API inválida
-  /events:
+  /api/events:
     get:
       summary: Retorna todos os eventos com filtros
       parameters:
@@ -96,7 +96,7 @@ paths:
                       type: number
         '400':
           description: Parâmetros inválidos
-  /events/{id}:
+  /api/events/{id}:
     get:
       summary: Retorna um evento específico por ID
       parameters:

@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
 
 /**
  * Middleware class responsible for verifying authentication tokens.
@@ -14,12 +15,20 @@ class AuthMiddleware {
      * @param {NextFunction} next - The next middleware or route handler to be called if authentication succeeds.
      */
     public verifyToken(req: Request, res: Response, next: NextFunction): void {
-        const token = req.headers['authorization'];
-        if (token === process.env.AUTH_TOKEN) {
-            next();
-        } else {
-            res.status(401).json({ error: 'Unauthorized' });
+        const token = req.headers['authorization']?.split(' ')[1];
+
+        if (!token) {
+            res.status(401).json({ error: 'No token provided' });
+            return;
         }
+
+        jwt.verify(token, process.env.JWT_SECRET || 'default_secret', (err) => {
+            if (err) {
+                return res.status(401).json({ error: 'Invalid token' });
+            }
+
+            next();
+        });
     }
 }
 

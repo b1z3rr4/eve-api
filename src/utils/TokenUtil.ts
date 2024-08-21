@@ -1,11 +1,13 @@
-import { randomBytes } from 'crypto';
+import jwt from 'jsonwebtoken';
 
 /**
- * Generates a secure random token as a hexadecimal string.
- * The token is 32 bytes long, which results in a 64-character hexadecimal string.
+ * Generates a JWT token for authentication.
  *
- * @returns {string} - A 64-character hexadecimal string representing the generated token.
+ * @returns {string} - The generated JWT token.
  */
 export function generateToken(): string {
-    return randomBytes(32).toString('hex');
+    const secret = process.env.JWT_SECRET || 'default_secret';
+    const expiresIn = process.env.JWT_EXPIRES_IN || '1h';
+
+    return jwt.sign({ }, secret, { expiresIn });
 }
