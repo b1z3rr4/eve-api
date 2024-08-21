@@ -1,0 +1,113 @@
+openapi: 3.0.0
+info:
+  title: API de Eventos
+  description: API para gerenciar eventos
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Servidor local
+paths:
+  /authenticate:
+    post:
+      summary: Autentica um usuário e retorna um token
+      parameters:
+        - in: header
+          name: x-api-key
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Token gerado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '401':
+          description: Chave de API inválida
+  /events:
+    get:
+      summary: Retorna todos os eventos com filtros
+      parameters:
+        - in: query
+          name: cep
+          schema:
+            type: string
+          description: CEP do usuário para filtro de proximidade
+        - in: query
+          name: maxDistance
+          schema:
+            type: number
+          description: Distância máxima em km
+        - in: query
+          name: tipo
+          schema:
+            type: string
+          description: Tipo de evento
+        - in: query
+          name: dia
+          schema:
+            type: string
+          description: Data do evento
+        - in: query
+          name: hora
+          schema:
+            type: string
+          description: Hora do evento
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: Palavras-chave para busca
+      responses:
+        '200':
+          description: Lista de eventos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    nome:
+                      type: string
+                    descricao:
+                      type: string
+                    tipo:
+                      type: string
+                    cep:
+                      type: string
+                    vagas:
+                      type: integer
+                    foto:
+                      type: string
+                    dia:
+                      type: string
+                    hora:
+                      type: string
+                    pessoaReferencia:
+                      type: string
+                    valor:
+                      type: number
+        '400':
+          description: Parâmetros inválidos
+  /events/{id}:
+    get:
+      summary: Retorna um evento específico por ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Evento encontrado
+          content:
+            application/json:
+           
