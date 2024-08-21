@@ -8,7 +8,7 @@
       "forceConsistentCasingInFileNames": true,
       "outDir": "./dist"
     },
-    "include": ["src/**/*.ts"],
+    "include": ["src/**/*.ts",  "src/database.json"],
     "exclude": ["node_modules"]
 }
   
