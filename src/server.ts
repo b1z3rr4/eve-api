@@ -6,7 +6,7 @@ import path from 'path';
 
 dotenv.config();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 const swaggerDocument = YAML.load(path.join(__dirname, '../swagger.yaml'));
 
