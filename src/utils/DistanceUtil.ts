@@ -6,13 +6,13 @@ import { getLatLongFromCep } from './GeoUtil';
  *
  * @param {string} cep1 - The CEP (postal code) of the first location.
  * @param {string} cep2 - The CEP (postal code) of the second location.
- * @returns {number} - The distance between the two locations in kilometers.
+ * @returns {Promise<any>} - The distance between the two locations in kilometers.
  *
  * @throws {Error} - Throws an error if the CEP does not have corresponding coordinates.
  */
-export function calculateDistance(cep1: string, cep2: string): number {
-  const { lat: lat1, long: long1 } = getLatLongFromCep(cep1);
-  const { lat: lat2, long: long2 } = getLatLongFromCep(cep2);
+export async function calculateDistance(cep1: string, cep2: string): Promise<any> {
+  const { lat: lat1, long: long1 } = await getLatLongFromCep(cep1);
+  const { lat: lat2, long: long2 } = await getLatLongFromCep(cep2);
 
   const toRadians = (degrees: number) => degrees * (Math.PI / 180);
 

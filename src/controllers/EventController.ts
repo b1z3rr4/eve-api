@@ -32,10 +32,14 @@ class EventController {
      * @param {Request} req - The incoming request object, containing query parameters for filtering.
      * @param {Response} res - The response object to be sent back to the client with the list of events.
      */
-    public getEvents(req: Request, res: Response): void {
-        const filters = req.query;
-        const events = eventService.getEvents(filters);
-        res.json(events);
+    public async getEvents(req: Request, res: Response): Promise<void> {
+        try {
+            const filters = req.query;
+            const events = await eventService.getEvents(filters);
+            res.json(events);
+        } catch (error) {
+            res.status(500).json({ error: 'An error occurred while fetching events.' });
+        }
     }
 
     /**

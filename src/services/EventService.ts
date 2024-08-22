@@ -21,12 +21,21 @@ export default class EventService {
      * @param {string} [filters.search] - A keyword to filter events by, searching within the event name and description.
      * @returns {Event[]} - An array of events that match the applied filters.
      */
-    public getEvents(filters: any): Event[] {
+    public async getEvents(filters: any): Promise<Event[]> {
         let events = this.eventRepository.getEvents();
 
         // Filtros por proximidade (CEP)
         if (filters.cep) {
-            events = events.filter(event => calculateDistance(event.cep, filters.cep) <= filters.maxDistance);
+            const filteredEvents = [];
+
+            for (const event of events) {
+                const distance = await calculateDistance(event.cep, filters.cep);
+                if (distance <= filters.maxDistance) {
+                    filteredEvents.push(event);
+                }
+            }
+
+            events = filteredEvents;
         }
 
         // Filtros por tipo
