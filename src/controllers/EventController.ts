@@ -38,6 +38,8 @@ class EventController {
             const events = await eventService.getEvents(filters);
             res.json(events);
         } catch (error) {
+            console.log(error);
+            
             res.status(500).json({ error: 'An error occurred while fetching events.' });
         }
     }

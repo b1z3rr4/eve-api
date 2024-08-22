@@ -24,20 +24,6 @@ export default class EventService {
     public async getEvents(filters: any): Promise<Event[]> {
         let events = this.eventRepository.getEvents();
 
-        // Filtros por proximidade (CEP)
-        if (filters.cep) {
-            const filteredEvents = [];
-
-            for (const event of events) {
-                const distance = await calculateDistance(event.cep, filters.cep);
-                if (distance <= filters.maxDistance) {
-                    filteredEvents.push(event);
-                }
-            }
-
-            events = filteredEvents;
-        }
-
         // Filtros por tipo
         if (filters.tipo) {
             events = events.filter(event => event.tipo === filters.tipo);
@@ -54,10 +40,19 @@ export default class EventService {
         // Filtros por palavra-chave (nome, descrição)
         if (filters.search) {
             const search = filters.search.toLowerCase();
-            events = events.filter(event =>
-                event.nome.toLowerCase().includes(search) ||
-                event.descricao.toLowerCase().includes(search)
-            );
+            events = events.filter(event => {
+                const tags = this.getTagsByEventId(event.id);
+
+                const searchEvent = event.nome.toLowerCase().includes(search) ||
+                    event.descricao.toLowerCase().includes(search);
+    
+                if (tags?.length) {
+                    const hasTags = tags?.some((item) => item.nome.toLowerCase().includes(filters.search));
+                    return searchEvent || hasTags;
+                }
+
+                return searchEvent;
+            });
         }
 
         return events;

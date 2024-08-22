@@ -7,7 +7,7 @@ const dbPath = path.join(__dirname, '../database.json');
 
 interface Database {
     events: Event[];
-    eventsTags: Tag[];
+    eventTags: Tag[];
 }
 
 /**
@@ -65,6 +65,6 @@ export default class EventRepository {
      */
     public getTagsByEventId(eventId: number): Tag[] {
         const db = this.loadDatabase();
-        return db.eventsTags.filter(tag => tag.eventId === eventId);
+        return db?.eventTags?.filter(tag => tag.eventId === eventId);
     }
 }
