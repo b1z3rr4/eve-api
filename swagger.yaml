@@ -6,6 +6,15 @@ info:
 servers:
   - url: https://eve-api-y5ml.onrender.com
     description: Servidor local
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []
+
 paths:
   /api/auth:
     post:
@@ -28,6 +37,7 @@ paths:
                     type: string
         '401':
           description: Chave de API inválida
+
   /api/events:
     get:
       summary: Retorna todos os eventos com filtros
@@ -62,6 +72,8 @@ paths:
           schema:
             type: string
           description: Palavras-chave para busca
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Lista de eventos
@@ -96,6 +108,9 @@ paths:
                       type: number
         '400':
           description: Parâmetros inválidos
+        '401':
+          description: Não autorizado. Token ausente ou inválido.
+
   /api/events/{id}:
     get:
       summary: Retorna um evento específico por ID
@@ -105,9 +120,39 @@ paths:
           required: true
           schema:
             type: integer
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Evento encontrado
           content:
             application/json:
-           
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  nome:
+                    type: string
+                  descricao:
+                    type: string
+                  tipo:
+                    type: string
+                  cep:
+                    type: string
+                  vagas:
+                    type: integer
+                  foto:
+                    type: string
+                  dia:
+                    type: string
+                  hora:
+                    type: string
+                  pessoaReferencia:
+                    type: string
+                  valor:
+                    type: number
+        '404':
+          description: Evento não encontrado
+        '401':
+          description: Não autorizado. Token ausente ou inválido.
