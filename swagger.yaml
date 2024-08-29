@@ -4,7 +4,7 @@ info:
   description: API para gerenciar eventos
   version: 1.0.0
 servers:
-  - url: http://localhost:4000
+  - url: https://eve-api-y5ml.onrender.com
     description: Servidor local
 components:
   securitySchemes:
