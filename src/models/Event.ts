@@ -10,4 +10,7 @@ export interface Event {
     hora: string;
     pessoaReferencia: string;
     valor: number;
+    latitude?: string;
+    longitude?: string;
+    muitasVisitasRecentes: boolean;
 }
